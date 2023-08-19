@@ -10,10 +10,10 @@ let digit = ['0'-'9']
 rule token = parse
     space+ { token lexbuf } (* 空白は読み飛ばす *)
   | "(*" [^'\n']* "\n" { token lexbuf } (* コメントは読み飛ばす *)
-  | digit+ { ("NUMBER", Lexing.lexeme lexbuf) }
-  | "(" { ("LPAREN", Lexing.lexeme lexbuf) }
-  | ")" { ("RPAREN", Lexing.lexeme lexbuf) }
-  | "-" { ("MINUS", Lexing.lexeme lexbuf) }
-  | "*" { ("TIMES", Lexing.lexeme lexbuf) }
-  | eof { ("EOF", "") }
+  | digit+ { Parser.NUMBER(int_of_string(Lexing.lexeme lexbuf)) }
+  | "(" { Parser.LPAREN }
+  | ")" { Parser.RPAREN }
+  | "-" { Parser.MINUS }
+  | "*" { Parser.TIMES }
+  | eof { Parser.EOF }
   | _ { failwith "unknown token" }
